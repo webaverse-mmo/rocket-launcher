@@ -183,49 +183,24 @@ export default e => {
                 let physicsExplosion = new THREE.Vector3();
                 physicsExplosion.copy(hitPosition);
 
-                let wall = useWorld().appManager.apps.find(app => app.name === "wall");
+                //let wall = useWorld().appManager.apps.find(app => app.name === "wall");
 
-                if(wall) {
-                  for (var i = 0; i < wall.children.length; i++) {
-                  let phyObj = wall.children[i].physicsObject;
-                  let dist = wall.children[i].position.distanceTo(physicsExplosion);
+                const worldApps = useWorld().appManager.apps;
 
-                  let dir = new THREE.Vector3();
-                  dir.subVectors(wall.children[i].position, physicsExplosion).normalize();
+                worldApps.forEach(worldApp => {
+                  const physicsObjects = worldApp.getPhysicsObjects();
+                  if(physicsObjects[0]) {
+                    let phyObj = physicsObjects[0];
+                    let dist = worldApp.position.distanceTo(physicsExplosion);
 
-                  if(dist < 3) {
-                    physics.addForceAtPos(phyObj, dir.multiplyScalar(dist*20), physicsExplosion);
+                    let dir = new THREE.Vector3();
+                    dir.subVectors(worldApp.position, physicsExplosion).normalize();
 
-                    const geometry = new THREE.SphereGeometry( dist, 32, 16 );
-                    const material = new THREE.MeshStandardMaterial( { color: 0xffffff } );
-                    material.transparent = true;
-                    material.opacity = 0.05;
-                    const sphere = new THREE.Mesh( geometry, material );
-                    scene.add( sphere );
-                    sphere.position.copy(hitPosition);
-                    sphere.updateMatrixWorld();
-
-                    setTimeout(() => {
-                      sphere.material.opacity = 0.025;
-
-                   }, 200);
-
-                    setTimeout(() => {
-                      sphere.material.opacity = 0.01;
-
-                   }, 400);
-
-                    setTimeout(() => {
-                      sphere.material.opacity = 0.005;
-
-                   }, 600);
-
-                    setTimeout(() => {
-                      scene.remove( sphere );
-                   }, 800);
+                    if(dist < 3) {
+                      physics.addForceAtPos(phyObj, dir.multiplyScalar(dist*20), physicsExplosion);
+                    }
                   }
-                }
-                }
+                });
               }
             }
           } else {
