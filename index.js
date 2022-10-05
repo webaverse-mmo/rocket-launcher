@@ -191,10 +191,10 @@ export default e => {
                   const physicsObjects = worldApp.getPhysicsObjects();
                   if(physicsObjects[0]) {
                     let phyObj = physicsObjects[0];
-                    let dist = worldApp.position.distanceTo(physicsExplosion);
+                    let dist = phyObj.position.distanceTo(physicsExplosion);
 
                     let dir = new THREE.Vector3();
-                    dir.subVectors(worldApp.position, physicsExplosion).normalize();
+                    dir.subVectors(phyObj.position, physicsExplosion).normalize();
 
                     if(dist < 3) {
                       physics.addForceAtPos(phyObj, dir.multiplyScalar(dist*20), physicsExplosion);
