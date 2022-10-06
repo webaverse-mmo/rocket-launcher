@@ -157,6 +157,11 @@ export default e => {
               moveFactor = collision.distance;
               arrowApp.velocity.setScalar(0);
               arrowApp.visible = false;
+
+              arrowApp.children.forEach(element => {
+                element.visible = false;
+                
+              });
             }
             {
               const collisionId = collision.objectId;
