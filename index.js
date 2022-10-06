@@ -156,6 +156,7 @@ export default e => {
               sounds.playSound(soundFiles.sonicBoom[hitSoundIndex]);
               moveFactor = collision.distance;
               arrowApp.velocity.setScalar(0);
+              arrowApp.visible = false;
             }
             {
               const collisionId = collision.objectId;
