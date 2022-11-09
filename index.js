@@ -37,6 +37,7 @@ const _setQuaternionFromVelocity = (quaternion, velocity) => quaternion.setFromR
 
 export default e => {
   const app = useApp();
+  app.subApps = [];
   app.name = 'rpg';
 
   const sounds = useSound();
@@ -114,6 +115,7 @@ export default e => {
       }
       await bowApp.addModule(m);
       scene.add(bowApp);
+      app.subApps.push(bowApp);
 
       const arrowTemplateMeshOriginal = bowApp.getObjectByName('rocket');
       const arrowTemplateMesh = arrowTemplateMeshOriginal.clone();
@@ -233,6 +235,7 @@ export default e => {
         // console.log('got use', e);
         pendingArrowApp = _createArrowApp();
         scene.add(pendingArrowApp);
+        app.subApps.push(pendingArrowApp);
 
         arrowTemplateMeshOriginal.visible = true;
       };
