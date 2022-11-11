@@ -37,7 +37,7 @@ const _setQuaternionFromVelocity = (quaternion, velocity) => quaternion.setFromR
 
 export default e => {
   const app = useApp();
-  app.subApps = [];
+  const subApps = [];
   app.name = 'rpg';
 
   const sounds = useSound();
@@ -115,7 +115,7 @@ export default e => {
       }
       await bowApp.addModule(m);
       scene.add(bowApp);
-      app.subApps.push(bowApp);
+      subApps.push(bowApp);
 
       const arrowTemplateMeshOriginal = bowApp.getObjectByName('rocket');
       const arrowTemplateMesh = arrowTemplateMeshOriginal.clone();
@@ -235,7 +235,7 @@ export default e => {
         // console.log('got use', e);
         pendingArrowApp = _createArrowApp();
         scene.add(pendingArrowApp);
-        app.subApps.push(pendingArrowApp);
+        subApps.push(pendingArrowApp);
 
         arrowTemplateMeshOriginal.visible = true;
       };
@@ -268,6 +268,24 @@ export default e => {
   app.getPhysicsObjects = () => {
     return bowApp ? bowApp.getPhysicsObjectsOriginal() : [];
   };
+  app.removePhysicsObjects = () => {
+    if (app.getPhysicsObjects()) {
+      for (const physicsId of app.getPhysicsObjects()) {
+        physics.removeGeometry(physicsId)
+        const index = app.getPhysicsObjects().indexOf(physicsId);
+        if (index > -1) {
+          app.getPhysicsObjects().splice(index, 1);
+        }
+      }
+    }
+  }
+  app.removeSubApps = () => {
+    for (const subApp of subApps) {
+      const parent = subApp.parent;
+      parent.remove(subApp);
+    }
+    
+  }
   
   useActivate(() => {
     const localPlayer = useLocalPlayer();
