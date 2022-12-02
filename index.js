@@ -61,9 +61,9 @@ export default e => {
   e.waitUntil((async () => {
     {
       let u2 = `${baseUrl}rocket-launcher.glb`;
-      if (/^https?:/.test(u2)) {
-        u2 = '/@proxy/' + u2;
-      }
+      // if (/^https?:/.test(u2)) {
+      //   u2 = '/@proxy/' + u2;
+      // }
       const m = await metaversefile.import(u2);
       const bowApp = metaversefile.createApp({
         name: u2,
